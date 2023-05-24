@@ -75,29 +75,5 @@ public  class UserDao {
         return user;
     }
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        ConnectionMaker cm = new DConnectionMaker();
-        UserDao dao = new UserDao(cm);
 
-        User user = new User();
-        user.setId("4");
-        user.setName("kyeongrok");
-        user.setPassword("12345678");
-
-//        User user2 = new User();
-//        user2.setId("2");
-//        user2.setName("kyeongrok");
-//        user2.setPassword("1234");
-
-//        dao.add(user);
-//        dao.add(user2);
-
-//        System.out.println(user.getId() + " 등록 성공");
-
-
-        User user3 = dao.get(user.getId());
-        System.out.println(user3.getName());
-        System.out.println(user3.getPassword());
-        System.out.println(user3.getId() + " 조회 성공");
-    }
 }
