@@ -8,8 +8,9 @@ import java.util.Map;
 import static java.lang.System.getenv;
 
 public  class UserDao {
-    SimpleConnectionMaker connectionMaker = new SimpleConnectionMaker();
+//    SimpleConnectionMaker connectionMaker = new SimpleConnectionMaker();
 
+    private  ConnectionMaker connectionMaker;
 //    public  Connection getConnection() throws ClassNotFoundException, SQLException;
 ////    {
 ////        Class.forName("com.mysql.cj.jdbc.Driver");
@@ -22,6 +23,9 @@ public  class UserDao {
 ////
 ////        return conn;
 ////    }
+    public UserDao(){
+        this.connectionMaker = new DConnectionMaker();
+    }
     public void add(User user) throws ClassNotFoundException, SQLException {
 //        Class.forName("com.mysql.cj.jdbc.Driver");
 //
@@ -31,8 +35,8 @@ public  class UserDao {
 //        String dbPassword = env.get("DB_PASSWORD");
 //        Connection conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
 
-        Connection conn = connectionMaker.makeNewConnection();
-
+//        Connection conn = connectionMaker.makeNewConnection();
+        Connection conn = connectionMaker.makeConnection();
         PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO users(ID, NAME, PASSWORD) VALUES (?, ?, ?)"
         );
@@ -48,8 +52,9 @@ public  class UserDao {
     }
 
     public User get(String id) throws SQLException, ClassNotFoundException {
-        Connection conn = connectionMaker.makeNewConnection();
+//        Connection conn = connectionMaker.makeNewConnection();
 
+        Connection conn = connectionMaker.makeConnection();
         PreparedStatement ps = conn.prepareStatement(
                 "SELECT id, name, password FROM users WHERE id = ?"
         );

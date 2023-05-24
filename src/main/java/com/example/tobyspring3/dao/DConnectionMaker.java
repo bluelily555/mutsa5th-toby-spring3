@@ -7,17 +7,18 @@ import java.util.Map;
 
 import static java.lang.System.getenv;
 
-public class NUserDao extends UserDao{
-
+public class DConnectionMaker implements ConnectionMaker{
     @Override
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
+    public Connection makeConnection() throws ClassNotFoundException, SQLException {
         Map<String, String> env = getenv();
         String dbHost = env.get("DB_HOST");
         String dbUser = env.get("DB_USER");
         String dbPassword = env.get("DB_PASSWORD");
-        Connection conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
+
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(
+                dbHost, dbUser, dbPassword
+        );
 
         return conn;
     }
