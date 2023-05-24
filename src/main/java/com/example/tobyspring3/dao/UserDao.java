@@ -23,8 +23,8 @@ public  class UserDao {
 ////
 ////        return conn;
 ////    }
-    public UserDao(){
-        this.connectionMaker = new DConnectionMaker();
+    public UserDao(ConnectionMaker cm){
+        this.connectionMaker = cm;
     }
     public void add(User user) throws ClassNotFoundException, SQLException {
 //        Class.forName("com.mysql.cj.jdbc.Driver");
@@ -76,7 +76,8 @@ public  class UserDao {
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+        ConnectionMaker cm = new DConnectionMaker();
+        UserDao dao = new UserDao(cm);
 
         User user = new User();
         user.setId("4");
