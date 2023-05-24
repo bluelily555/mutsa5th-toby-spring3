@@ -7,19 +7,30 @@ import java.util.Map;
 
 import static java.lang.System.getenv;
 
-public class UserDao {
-    Connection conn;
-    Map<String, String> env = getenv();
-    String dbHost = env.get("DB_HOST");
-    String dbUser = env.get("DB_USER");
-    String dbPassword = env.get("DB_PASSWORD");
-
-    public UserDao() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        this.conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
-    }
-
+public abstract class UserDao {
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+//    {
+//        Class.forName("com.mysql.cj.jdbc.Driver");
+//
+//        Map<String, String> env = getenv();
+//        String dbHost = env.get("DB_HOST");
+//        String dbUser = env.get("DB_USER");
+//        String dbPassword = env.get("DB_PASSWORD");
+//        Connection conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
+//
+//        return conn;
+//    }
     public void add(User user) throws ClassNotFoundException, SQLException {
+//        Class.forName("com.mysql.cj.jdbc.Driver");
+//
+//        Map<String, String> env = getenv();
+//        String dbHost = env.get("DB_HOST");
+//        String dbUser = env.get("DB_USER");
+//        String dbPassword = env.get("DB_PASSWORD");
+//        Connection conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
+
+        Connection conn = getConnection();
+
         PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO users(ID, NAME, PASSWORD) VALUES (?, ?, ?)"
         );
@@ -35,6 +46,7 @@ public class UserDao {
     }
 
     public User get(String id) throws SQLException, ClassNotFoundException {
+        Connection conn = getConnection();
 
         PreparedStatement ps = conn.prepareStatement(
                 "SELECT id, name, password FROM users WHERE id = ?"
@@ -57,17 +69,17 @@ public class UserDao {
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+        UserDao dao = new NUserDao();
 
         User user = new User();
-        user.setId("1");
+        user.setId("4");
         user.setName("kyeongrok");
         user.setPassword("12345678");
 
-        User user2 = new User();
-        user2.setId("2");
-        user2.setName("kyeongrok");
-        user2.setPassword("1234");
+//        User user2 = new User();
+//        user2.setId("2");
+//        user2.setName("kyeongrok");
+//        user2.setPassword("1234");
 
 //        dao.add(user);
 //        dao.add(user2);
