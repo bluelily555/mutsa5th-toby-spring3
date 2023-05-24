@@ -8,28 +8,18 @@ import java.util.Map;
 import static java.lang.System.getenv;
 
 public class UserDao {
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
+    Connection conn;
+    Map<String, String> env = getenv();
+    String dbHost = env.get("DB_HOST");
+    String dbUser = env.get("DB_USER");
+    String dbPassword = env.get("DB_PASSWORD");
+
+    public UserDao() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-
-        Map<String, String> env = getenv();
-        String dbHost = env.get("DB_HOST");
-        String dbUser = env.get("DB_USER");
-        String dbPassword = env.get("DB_PASSWORD");
-        Connection conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
-
-        return conn;
+        this.conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
     }
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-//        Class.forName("com.mysql.cj.jdbc.Driver");
-//
-//        Map<String, String> env = getenv();
-//        String dbHost = env.get("DB_HOST");
-//        String dbUser = env.get("DB_USER");
-//        String dbPassword = env.get("DB_PASSWORD");
-//        Connection conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
-
-        Connection conn = getConnection();
-
         PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO users(ID, NAME, PASSWORD) VALUES (?, ?, ?)"
         );
@@ -45,7 +35,6 @@ public class UserDao {
     }
 
     public User get(String id) throws SQLException, ClassNotFoundException {
-        Connection conn = getConnection();
 
         PreparedStatement ps = conn.prepareStatement(
                 "SELECT id, name, password FROM users WHERE id = ?"
